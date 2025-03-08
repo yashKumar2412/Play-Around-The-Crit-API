@@ -1,22 +1,21 @@
 package com.patc.model;
 
-import com.patc.enums.Category;
+import com.patc.enums.MoveCategory;
 import com.patc.enums.Type;
 
 import java.util.Objects;
 
 public class Move {
-
     private String name;
-    private String description;
     private Type type;
+    private boolean doesDamage;
     private int basePower;
-    private Category category;
+    private MoveCategory category;
 
-    public Move(String name, String description, Type type, int basePower, Category category) {
+    public Move(String name, Type type, boolean doesDamage, int basePower, MoveCategory category) {
         this.name = name;
-        this.description = description;
         this.type = type;
+        this.doesDamage = doesDamage;
         this.basePower = basePower;
         this.category = category;
     }
@@ -29,20 +28,20 @@ public class Move {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Type getType() {
         return type;
     }
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public boolean isDoesDamage() {
+        return doesDamage;
+    }
+
+    public void setDoesDamage(boolean doesDamage) {
+        this.doesDamage = doesDamage;
     }
 
     public int getBasePower() {
@@ -53,11 +52,11 @@ public class Move {
         this.basePower = basePower;
     }
 
-    public Category getCategory() {
+    public MoveCategory getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(MoveCategory category) {
         this.category = category;
     }
 
@@ -65,20 +64,20 @@ public class Move {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Move move = (Move) o;
-        return basePower == move.basePower && Objects.equals(name, move.name) && Objects.equals(description, move.description) && type == move.type && category == move.category;
+        return doesDamage == move.doesDamage && basePower == move.basePower && Objects.equals(name, move.name) && type == move.type && category == move.category;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, type, basePower, category);
+        return Objects.hash(name, type, doesDamage, basePower, category);
     }
 
     @Override
     public String toString() {
         return "Move{" +
                 "name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 ", type=" + type +
+                ", doesDamage=" + doesDamage +
                 ", basePower=" + basePower +
                 ", category=" + category +
                 '}';

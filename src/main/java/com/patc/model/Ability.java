@@ -41,9 +41,7 @@ public class Ability {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Ability ability = (Ability) o;
-        return hasInGameEffect == ability.hasInGameEffect
-                                    && Objects.equals(name, ability.name)
-                                    && Objects.equals(description, ability.description);
+        return hasInGameEffect == ability.hasInGameEffect && Objects.equals(name, ability.name) && Objects.equals(description, ability.description);
     }
 
     @Override

@@ -41,9 +41,7 @@ public class Item {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return hasInGameEffect == item.hasInGameEffect
-                && Objects.equals(name, item.name)
-                && Objects.equals(description, item.description);
+        return hasInGameEffect == item.hasInGameEffect && Objects.equals(name, item.name) && Objects.equals(description, item.description);
     }
 
     @Override

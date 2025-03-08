@@ -1,26 +1,34 @@
 package com.patc.model;
 
-import com.patc.enums.StatsType;
+import com.patc.enums.StatType;
 
 import java.util.Objects;
 
 public class Stats {
+    private StatType type;
     private int hp;
     private int attack;
     private int defense;
     private int specialAttack;
     private int specialDefense;
     private int speed;
-    private StatsType statsType;
 
-    public Stats(int hp, int attack, int defense, int specialAttack, int specialDefense, int speed, StatsType statsType) {
+    public Stats(StatType type, int hp, int attack, int defense, int specialAttack, int specialDefense, int speed) {
+        this.type = type;
         this.hp = hp;
         this.attack = attack;
         this.defense = defense;
         this.specialAttack = specialAttack;
         this.specialDefense = specialDefense;
         this.speed = speed;
-        this.statsType = statsType;
+    }
+
+    public StatType getType() {
+        return type;
+    }
+
+    public void setType(StatType type) {
+        this.type = type;
     }
 
     public int getHp() {
@@ -71,42 +79,28 @@ public class Stats {
         this.speed = speed;
     }
 
-    public StatsType getStatsType() {
-        return statsType;
-    }
-
-    public void setStatsType(StatsType statsType) {
-        this.statsType = statsType;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Stats stats = (Stats) o;
-        return hp == stats.hp
-                && attack == stats.attack
-                && defense == stats.defense
-                && specialAttack == stats.specialAttack
-                && specialDefense == stats.specialDefense
-                && speed == stats.speed
-                && statsType == stats.statsType;
+        return hp == stats.hp && attack == stats.attack && defense == stats.defense && specialAttack == stats.specialAttack && specialDefense == stats.specialDefense && speed == stats.speed && type == stats.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hp, attack, defense, specialAttack, specialDefense, speed, statsType);
+        return Objects.hash(type, hp, attack, defense, specialAttack, specialDefense, speed);
     }
 
     @Override
     public String toString() {
         return "Stats{" +
-                "hp=" + hp +
+                "type=" + type +
+                ", hp=" + hp +
                 ", attack=" + attack +
                 ", defense=" + defense +
                 ", specialAttack=" + specialAttack +
                 ", specialDefense=" + specialDefense +
                 ", speed=" + speed +
-                ", statsType=" + statsType +
                 '}';
     }
 }

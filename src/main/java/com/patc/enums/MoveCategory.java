@@ -1,5 +1,5 @@
 package com.patc.enums;
 
-public enum Category {
+public enum MoveCategory {
     PHYSICAL, SPECIAL, STATUS
 }

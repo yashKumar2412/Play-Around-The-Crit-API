@@ -1,6 +1,5 @@
 package com.patc.model;
 
-import com.patc.enums.Nature;
 import com.patc.enums.Type;
 
 import java.util.Objects;
@@ -8,25 +7,22 @@ import java.util.Objects;
 public class Pokemon {
     private int dexNumber;
     private String name;
-    private Type type1;
-    private Type type2;
-    private Ability ability;
-    private Nature nature;
+    private Type primaryType;
+    private Type secondaryType;
+    private double height;
+    private double weight;
     private Stats baseStats;
-    private Stats iv;
-    private Stats ev;
-    private Stats effectiveStats;
+    private boolean isMega;
 
-    public Pokemon(int dexNumber, String name, Type type1, Type type2, Ability ability, Nature nature, Stats baseStats, Stats iv, Stats ev) {
+    public Pokemon(int dexNumber, String name, Type primaryType, Type secondaryType, double height, double weight, Stats baseStats, boolean isMega) {
         this.dexNumber = dexNumber;
         this.name = name;
-        this.type1 = type1;
-        this.type2 = type2;
-        this.ability = ability;
-        this.nature = nature;
+        this.primaryType = primaryType;
+        this.secondaryType = secondaryType;
+        this.height = height;
+        this.weight = weight;
         this.baseStats = baseStats;
-        this.iv = iv;
-        this.ev = ev;
+        this.isMega = isMega;
     }
 
     public int getDexNumber() {
@@ -45,36 +41,36 @@ public class Pokemon {
         this.name = name;
     }
 
-    public Type getType1() {
-        return type1;
+    public Type getPrimaryType() {
+        return primaryType;
     }
 
-    public void setType1(Type type1) {
-        this.type1 = type1;
+    public void setPrimaryType(Type primaryType) {
+        this.primaryType = primaryType;
     }
 
-    public Type getType2() {
-        return type2;
+    public Type getSecondaryType() {
+        return secondaryType;
     }
 
-    public void setType2(Type type2) {
-        this.type2 = type2;
+    public void setSecondaryType(Type secondaryType) {
+        this.secondaryType = secondaryType;
     }
 
-    public Ability getAbility() {
-        return ability;
+    public double getHeight() {
+        return height;
     }
 
-    public void setAbility(Ability ability) {
-        this.ability = ability;
+    public void setHeight(double height) {
+        this.height = height;
     }
 
-    public Nature getNature() {
-        return nature;
+    public double getWeight() {
+        return weight;
     }
 
-    public void setNature(Nature nature) {
-        this.nature = nature;
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     public Stats getBaseStats() {
@@ -85,52 +81,24 @@ public class Pokemon {
         this.baseStats = baseStats;
     }
 
-    public Stats getIv() {
-        return iv;
+    public boolean isMega() {
+        return isMega;
     }
 
-    public void setIv(Stats iv) {
-        this.iv = iv;
+    public void setMega(boolean mega) {
+        isMega = mega;
     }
-
-    public Stats getEv() {
-        return ev;
-    }
-
-    public void setEv(Stats ev) {
-        this.ev = ev;
-    }
-
-    public Stats getEffectiveStats() {
-        return effectiveStats;
-    }
-
-    public void setEffectiveStats(Stats effectiveStats) {
-        this.effectiveStats = effectiveStats;
-    }
-
-    // todo: implement actual calculation
-    public void updateStats() {}
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Pokemon pokemon = (Pokemon) o;
-        return dexNumber == pokemon.dexNumber
-                && Objects.equals(name, pokemon.name)
-                && type1 == pokemon.type1
-                && type2 == pokemon.type2
-                && Objects.equals(ability, pokemon.ability)
-                && Objects.equals(nature, pokemon.nature)
-                && Objects.equals(baseStats, pokemon.baseStats)
-                && Objects.equals(iv, pokemon.iv)
-                && Objects.equals(ev, pokemon.ev)
-                && Objects.equals(effectiveStats, pokemon.effectiveStats);
+        return dexNumber == pokemon.dexNumber && Double.compare(height, pokemon.height) == 0 && Double.compare(weight, pokemon.weight) == 0 && isMega == pokemon.isMega && Objects.equals(name, pokemon.name) && primaryType == pokemon.primaryType && secondaryType == pokemon.secondaryType && Objects.equals(baseStats, pokemon.baseStats);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dexNumber, name, type1, type2, ability, nature, baseStats, iv, ev, effectiveStats);
+        return Objects.hash(dexNumber, name, primaryType, secondaryType, height, weight, baseStats, isMega);
     }
 
     @Override
@@ -138,14 +106,12 @@ public class Pokemon {
         return "Pokemon{" +
                 "dexNumber=" + dexNumber +
                 ", name='" + name + '\'' +
-                ", type1=" + type1 +
-                ", type2=" + type2 +
-                ", ability=" + ability +
-                ", nature=" + nature +
+                ", primaryType=" + primaryType +
+                ", secondaryType=" + secondaryType +
+                ", height=" + height +
+                ", weight=" + weight +
                 ", baseStats=" + baseStats +
-                ", iv=" + iv +
-                ", ev=" + ev +
-                ", effectiveStats=" + effectiveStats +
+                ", isMega=" + isMega +
                 '}';
     }
 }

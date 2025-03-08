@@ -1,9 +1,9 @@
 package com.patc.enums;
 
 public enum Nature {
-    Adamant, Bashful, Bold, Brave, Calm,
-    Careful, Docile, Gentle, Hardy, Hasty,
-    Impish, Jolly, Lax, Lonely, Mild,
-    Modest, Naive, Naughty, Quiet, Quirky,
-    Rash, Relaxed, Sassy, Serious, Timid
+    Hardy, Lonely, Adamant, Naughty, Brave,
+    Bold, Docile, Impish, Lax, Relaxed,
+    Modest, Mild, Bashful, Rash, Quiet,
+    Calm, Gentle, Careful, Quirky, Sassy,
+    Timid, Hasty, Jolly, Naive, Serious
 }

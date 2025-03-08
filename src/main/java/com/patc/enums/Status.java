@@ -1,6 +1,6 @@
 package com.patc.enums;
 
 public enum Status {
-    HEALTHY, PARALYZED, ASLEEP, POISONED,
-    BADLY_POISONED, BURNED, FROZEN
+    Healthy, Poisoned, Badly_Poisoned,
+    Burned, Paralyzed, Asleep, Frozen
 }
