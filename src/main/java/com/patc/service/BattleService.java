@@ -1,6 +1,8 @@
 package com.patc.service;
 
+import com.patc.enums.Status;
 import com.patc.model.Battle;
+import com.patc.model.Stats;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +37,24 @@ public class BattleService {
 
     public Battle selectMove(List<String> moveNames, boolean isUser) {
         battle.selectMove(moveNames, isUser);
+        calculateAllDamages();
+        return battle;
+    }
+
+    public Battle updateHealth(int newHealth, boolean isUser) {
+        battle.updateHealth(newHealth, isUser);
+        calculateAllDamages();
+        return battle;
+    }
+
+    public Battle updateEffectiveStats(Stats newStats, boolean isUser) {
+        battle.updateEffectiveStats(newStats, isUser);
+        calculateAllDamages();
+        return battle;
+    }
+
+    public Battle updateStatus(Status newStatus, boolean isUser) {
+        battle.updateStatus(newStatus, isUser);
         calculateAllDamages();
         return battle;
     }

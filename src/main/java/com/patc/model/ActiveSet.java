@@ -57,7 +57,7 @@ public class ActiveSet {
     }
 
     public void setHealth(int health) {
-        this.health = health;
+        this.health = Math.min(health, set.getDisplayedStats().getHp());
     }
 
     public Status getStatus() {
@@ -96,15 +96,13 @@ public class ActiveSet {
 
             if (move.isDoesDamage()) {
                 int baseDamage = (2 * set.getLevel()) / 5 + 2;
-                baseDamage = baseDamage * move.getBasePower();
+                int basePower = move.getBasePower();
 
                 if (set.getHeldItem() != null && set.getHeldItem().isHasInGameEffect()) {
-                    baseDamage = calculateItemBoost(move, baseDamage);
+                    basePower = calculateBasePowerBoostByItem(move, basePower);
                 }
 
-                if (set.getAbility().isHasInGameEffect()) {
-                    baseDamage = calculateAbilityBoost(move, baseDamage);
-                }
+                baseDamage = baseDamage * basePower;
 
                 int atk = 1, def = 1;
 
@@ -116,9 +114,12 @@ public class ActiveSet {
                     def = opponent.effectiveStats.getSpecialDefense();
                 }
 
+                if (set.getAbility().isHasInGameEffect()) {
+                    atk = calculateStatBoostByAbility(move, atk);
+                }
+
                 baseDamage = (baseDamage * atk) / def;
                 baseDamage = baseDamage / 50 + 2;
-                int critBaseDamage = (baseDamage * 3) / 2;
 
                 if (weather.equals(Weather.Rain)) {
                     if (move.getType().equals(Type.WATER))
@@ -131,6 +132,8 @@ public class ActiveSet {
                     else if (move.getType().equals(Type.WATER))
                         baseDamage = baseDamage / 2;
                 }
+
+                int critBaseDamage = (baseDamage * 3) / 2;
 
                 for (int random = 85; random <= 100; random++) {
                     int randomBaseDamage = (random * baseDamage) / 100;
@@ -155,14 +158,15 @@ public class ActiveSet {
                     calculateTypeMultiplierDamages(multiplier, damageList, critDamageList);
                 }
 
-                if (damageList.get(0) != 0 && status.equals(Status.Burned) && move.getCategory().equals(MoveCategory.PHYSICAL))
-                    baseDamage = baseDamage / 2;
-
-            } else {
-                for (int i = 0; i < 16; i++) {
-                    damageList.add(0);
-                    critDamageList.add(0);
+                if (damageList.get(0) != 0 && status.equals(Status.Burned) && move.getCategory().equals(MoveCategory.PHYSICAL)) {
+                    for (int i = 0; i < 16; i++) {
+                        damageList.set(i, damageList.get(i)  / 2);
+                        critDamageList.set(i, critDamageList.get(i) / 2);
+                    }
                 }
+            } else {
+                damageList.add(0);
+                critDamageList.add(0);
             }
 
             this.damage.put(move, damageList);
@@ -171,52 +175,56 @@ public class ActiveSet {
     }
 
     private void calculateTypeMultiplierDamages(Double multiplier, List<Integer> damageList, List<Integer> critDamageList) {
-        for (int i = 0; i < 16; i++) {
-            if (multiplier == 0.5) {
-                damageList.set(i, damageList.get(i) / 2);
-                critDamageList.set(i, critDamageList.get(i) / 2);
-            } else if (multiplier == 2.0) {
-                damageList.set(i, damageList.get(i) * 2);
-                critDamageList.set(i, critDamageList.get(i) * 2);
-            } else if (multiplier == 0.0) {
-                damageList.set(i, 0);
-                critDamageList.set(i, 0);
+        if (multiplier == 0) {
+            damageList.clear();
+            damageList.add(0);
+            critDamageList.clear();
+            critDamageList.add(0);
+        } else {
+            for (int i = 0; i < 16; i++) {
+                if (multiplier == 0.5) {
+                    damageList.set(i, damageList.get(i) / 2);
+                    critDamageList.set(i, critDamageList.get(i) / 2);
+                } else if (multiplier == 2.0) {
+                    damageList.set(i, damageList.get(i) * 2);
+                    critDamageList.set(i, critDamageList.get(i) * 2);
+                }
             }
         }
     }
 
-    private int calculateItemBoost(Move move, int baseDamage) {
+    private int calculateBasePowerBoostByItem(Move move, int basePower) {
         if (move.getType().equals(Type.GRASS) && set.getHeldItem().getName().equals("Miracle Seed")) {
-            baseDamage = (baseDamage * 6) / 5;
+            basePower = (basePower * 6) / 5;
         }
 
         if (move.getType().equals(Type.FIRE) && set.getHeldItem().getName().equals("Charcoal")) {
-            baseDamage = (baseDamage * 6) / 5;
+            basePower = (basePower * 6) / 5;
         }
 
         if (move.getType().equals(Type.WATER) && set.getHeldItem().getName().equals("Mystic Water")) {
-            baseDamage = (baseDamage * 6) / 5;
+            basePower = (basePower * 6) / 5;
         }
 
-        return baseDamage;
+        return basePower;
     }
 
-    private int calculateAbilityBoost(Move move, int baseDamage) {
-        if (health < set.getDisplayedStats().getHp() / 3) {
+    private int calculateStatBoostByAbility(Move move, int atk) {
+        if (health <= set.getDisplayedStats().getHp() / 3) {
             if (move.getType().equals(Type.GRASS) && set.getAbility().getName().equals("Overgrow")) {
-                baseDamage = (baseDamage * 3) / 2;
+                atk = (atk * 3) / 2;
             }
 
             if (move.getType().equals(Type.FIRE) && set.getAbility().getName().equals("Blaze")) {
-                baseDamage = (baseDamage * 3) / 2;
+                atk = (atk * 3) / 2;
             }
 
             if (move.getType().equals(Type.WATER) && set.getAbility().getName().equals("Torrent")) {
-                baseDamage = (baseDamage * 3) / 2;
+                atk = (atk * 3) / 2;
             }
         }
 
-        return baseDamage;
+        return atk;
     }
 
     @Override

@@ -1,14 +1,13 @@
 package com.patc.controller;
 
 import com.patc.enums.RequestType;
+import com.patc.enums.Status;
 import com.patc.model.SelectRequestBody;
 import com.patc.model.Battle;
+import com.patc.model.Stats;
 import com.patc.service.BattleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -36,4 +35,19 @@ public class Controller {
 
         return battleService.getBattle();
     }
+
+    @GetMapping("/update/health/{newHealth}/{isUser}")
+    public Battle updateHealth(@PathVariable int newHealth, @PathVariable boolean isUser) {
+        return battleService.updateHealth(newHealth, isUser);
+    }
+
+    @GetMapping("/update/status/{newStatus}/{isUser}")
+    public Battle updateStatus(@PathVariable Status newStatus, @PathVariable boolean isUser) {
+        return battleService.updateStatus(newStatus, isUser);
+    }
+
+//    @GetMapping("/update/stats/modifiers/{isUser}")
+//    public Battle updateStatModifiers(@RequestBody Stats newStats, @PathVariable boolean isUser) {
+//        return battleService.updateEffectiveStats(newStats, isUser);
+//    }
 }
