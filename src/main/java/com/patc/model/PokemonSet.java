@@ -21,14 +21,27 @@ public class PokemonSet {
     public PokemonSet(String name, Pokemon pokemon, int level, Stats iv, Stats ev, Ability ability, Nature nature, Item heldItem, List<Move> moves) {
         this.name = name;
         this.pokemon = pokemon;
-        this.level = level;
-        this.iv = iv;
-        this.ev = ev;
+        setLevel(level);
+        setIv(iv);
+        setEv(ev);
         this.ability = ability;
         this.nature = nature;
         calculateStats();
         this.heldItem = heldItem;
         this.moves = moves;
+    }
+
+    public PokemonSet(PokemonSet copy) {
+        this.name = copy.getName();
+        this.pokemon = copy.getPokemon();
+        setLevel(copy.getLevel());
+        setIv(copy.getIv());
+        setEv(copy.getEv());
+        this.ability = copy.getAbility();
+        this.nature = copy.getNature();
+        calculateStats();
+        this.heldItem = copy.getHeldItem();
+        this.moves = copy.getMoves();
     }
 
     private void calculateStats() {
@@ -93,7 +106,7 @@ public class PokemonSet {
     }
 
     public void setLevel(int level) {
-        this.level = level;
+        this.level = Math.min(level, 100);
     }
 
     public Stats getIv() {
@@ -101,7 +114,21 @@ public class PokemonSet {
     }
 
     public void setIv(Stats iv) {
-        this.iv = iv;
+        if (iv.getType() != StatType.IV)
+            this.iv = getDefaultIv();
+        else {
+            int hp = Math.min(iv.getHp(), 31);
+            int attack = Math.min(iv.getHp(), 31);
+            int defense = Math.min(iv.getHp(), 31);
+            int specialAttack = Math.min(iv.getHp(), 31);
+            int specialDefense = Math.min(iv.getHp(), 31);
+            int speed = Math.min(iv.getHp(), 31);
+            this.iv = new Stats(StatType.IV, hp, attack, defense, specialAttack, specialDefense, speed);
+        }
+    }
+
+    public Stats getDefaultIv() {
+        return new Stats(StatType.IV, 31, 31, 31, 31, 31, 31);
     }
 
     public Stats getEv() {
@@ -109,7 +136,43 @@ public class PokemonSet {
     }
 
     public void setEv(Stats ev) {
-        this.ev = ev;
+        if (ev.getType() != StatType.EV)
+            this.ev = getDefaultEv();
+        else {
+            int hp = Math.min(ev.getHp(), 255);
+            int attack = Math.min(ev.getHp(), 255);
+            int defense = Math.min(ev.getHp(), 255);
+            int specialAttack = Math.min(ev.getHp(), 255);
+            int specialDefense = Math.min(ev.getHp(), 255);
+            int speed = Math.min(ev.getHp(), 255);
+
+            int total = hp + attack;
+            if (total + defense > 510) {
+                defense = (510 - total);
+            }
+            total = total + defense;
+
+            if (total + specialAttack > 510) {
+                specialAttack = (510 - total);
+            }
+            total = total + specialAttack;
+
+            if (total + specialDefense > 510) {
+                specialDefense = (510 - total);
+            }
+            total = total + specialDefense;
+
+            if (total + speed > 510) {
+                speed = (510 - total);
+            }
+            total = total + speed;
+
+            this.ev = new Stats(StatType.EV, hp, attack, defense, specialAttack, specialDefense, speed);
+        }
+    }
+
+    public Stats getDefaultEv() {
+        return new Stats(StatType.EV, 0, 0, 0, 0, 0, 0);
     }
 
     public Ability getAbility() {
