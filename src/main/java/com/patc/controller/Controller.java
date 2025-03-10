@@ -50,4 +50,9 @@ public class Controller {
     public Battle updateStatModifiers(@RequestBody Stats statModifiers, @PathVariable boolean isUser) {
         return battleService.updateEffectiveStats(statModifiers, isUser);
     }
+
+    @GetMapping("/update/screens/{screenType}/{isUser}")
+    public Battle updateScreens(@PathVariable String screenType, @PathVariable boolean isUser) {
+        return battleService.updateScreens(screenType, isUser);
+    }
 }

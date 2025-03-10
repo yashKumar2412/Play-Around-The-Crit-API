@@ -12,6 +12,8 @@ public class ActiveSet {
     private Status status;
     private Map<Move, List<Integer>> damage;
     private Map<Move, List<Integer>> critDamage;
+    private boolean reflect;
+    private boolean lightScreen;
 
     public ActiveSet(PokemonSet set) {
         this.set = set;
@@ -21,6 +23,8 @@ public class ActiveSet {
         this.status = Status.Healthy;
         this.damage = new HashMap<>();
         this.critDamage = new HashMap<>();
+        this.reflect = false;
+        this.lightScreen = false;
     }
 
     public ActiveSet(PokemonSet set, ActiveSet opponent, Weather weather, Map<Type, Map<Type, Double>> typeChart) {
@@ -253,6 +257,18 @@ public class ActiveSet {
                         critDamageList.set(i, critDamageList.get(i) / 2);
                     }
                 }
+
+                if (move.getCategory().equals(MoveCategory.PHYSICAL) && opponent.isReflect()) {
+                    for (int i = 0; i < 16; i++) {
+                        damageList.set(i, damageList.get(i)  / 2);
+                    }
+                }
+
+                if (move.getCategory().equals(MoveCategory.SPECIAL) && opponent.isLightScreen()) {
+                    for (int i = 0; i < 16; i++) {
+                        damageList.set(i, damageList.get(i)  / 2);
+                    }
+                }
             } else {
                 damageList.add(0);
                 critDamageList.add(0);
@@ -314,6 +330,22 @@ public class ActiveSet {
         }
 
         return atk;
+    }
+
+    public boolean isReflect() {
+        return reflect;
+    }
+
+    public void setReflect(boolean reflect) {
+        this.reflect = reflect;
+    }
+
+    public boolean isLightScreen() {
+        return lightScreen;
+    }
+
+    public void setLightScreen(boolean lightScreen) {
+        this.lightScreen = lightScreen;
     }
 
     @Override

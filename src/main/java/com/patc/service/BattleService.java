@@ -59,6 +59,12 @@ public class BattleService {
         return battle;
     }
 
+    public Battle updateScreens(String screenType, boolean isUser) {
+        battle.updateScreen(screenType, isUser);
+        calculateAllDamages();
+        return battle;
+    }
+
     private void calculateAllDamages() {
         battle.calculateAllDamages(true);
         battle.calculateAllDamages(false);

@@ -120,6 +120,20 @@ public class Battle {
         }
     }
 
+    public void updateScreen(String screenType, boolean isUser) {
+        if (isUser) {
+            if (screenType.equals("Reflect"))
+                user.setReflect(true);
+            if (screenType.equals("LightScreen"))
+                user.setLightScreen(true);
+        } else {
+            if (screenType.equals("Reflect"))
+                ai.setReflect(true);
+            if (screenType.equals("LightScreen"))
+                ai.setLightScreen(true);
+        }
+    }
+
     public void calculateAllDamages(boolean isUser) {
         if (isUser) {
             user.calculateAllDamages(ai, weather, data.getTypeChart());
