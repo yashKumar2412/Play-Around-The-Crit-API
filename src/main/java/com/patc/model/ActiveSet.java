@@ -181,36 +181,48 @@ public class ActiveSet {
 
                 baseDamage = baseDamage * basePower;
 
-                int atk = 1, def = 1;
+                int atk = 1, def = 1, critDef = 1;
 
                 if (move.getCategory().equals(MoveCategory.PHYSICAL)) {
                     atk = effectiveStats.getAttack();
                     def = opponent.effectiveStats.getDefense();
+                    critDef = opponent.set.getDisplayedStats().getDefense();
                 } else if (move.getCategory().equals(MoveCategory.SPECIAL)) {
                     atk = effectiveStats.getSpecialAttack();
                     def = opponent.effectiveStats.getSpecialDefense();
+                    critDef = opponent.set.getDisplayedStats().getSpecialDefense();
                 }
 
                 if (set.getAbility().isHasInGameEffect()) {
                     atk = calculateStatBoostByAbility(move, atk);
                 }
 
-                baseDamage = (baseDamage * atk) / def;
+                baseDamage = (baseDamage * atk);
+                int critBaseDamage = baseDamage / critDef;
+                critBaseDamage = critBaseDamage / 50 + 2;
+
+                baseDamage = baseDamage / def;
                 baseDamage = baseDamage / 50 + 2;
 
                 if (weather.equals(Weather.Rain)) {
-                    if (move.getType().equals(Type.WATER))
+                    if (move.getType().equals(Type.WATER)) {
                         baseDamage = (baseDamage * 3) / 2;
-                    else if (move.getType().equals(Type.FIRE))
+                        critBaseDamage = (critBaseDamage * 3) / 2;
+                    } else if (move.getType().equals(Type.FIRE)) {
                         baseDamage = baseDamage / 2;
+                        critBaseDamage = critBaseDamage / 2;
+                    }
                 } else if (weather.equals(Weather.Sun)) {
-                    if (move.getType().equals(Type.FIRE))
+                    if (move.getType().equals(Type.FIRE)) {
                         baseDamage = (baseDamage * 3) / 2;
-                    else if (move.getType().equals(Type.WATER))
+                        critBaseDamage = (critBaseDamage * 3) / 2;
+                    } else if (move.getType().equals(Type.WATER)) {
                         baseDamage = baseDamage / 2;
+                        critBaseDamage = critBaseDamage / 2;
+                    }
                 }
 
-                int critBaseDamage = (baseDamage * 3) / 2;
+                critBaseDamage = (critBaseDamage * 3) / 2;
 
                 for (int random = 85; random <= 100; random++) {
                     int randomBaseDamage = (random * baseDamage) / 100;
