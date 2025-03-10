@@ -15,8 +15,8 @@ public class ActiveSet {
 
     public ActiveSet(PokemonSet set) {
         this.set = set;
-        this.statModifiers = new Stats(StatType.MODIFIERS, 0, 0, 0, 0, 0, 0);
-        calculateStats();
+        this.statModifiers = getDefaultStatModifiers();
+        calculateStats(statModifiers);
         this.health = effectiveStats.getHp();
         this.status = Status.Healthy;
         this.damage = new HashMap<>();
@@ -41,7 +41,27 @@ public class ActiveSet {
     }
 
     public void setStatModifiers(Stats statModifiers) {
-        this.statModifiers = statModifiers;
+        if (statModifiers.getType().equals(StatType.MODIFIERS)) {
+            int attack = checkRangesForModifiers(statModifiers.getAttack());
+            int defense = checkRangesForModifiers(statModifiers.getDefense());
+            int specialAttack = checkRangesForModifiers(statModifiers.getSpecialAttack());
+            int specialDefense = checkRangesForModifiers(statModifiers.getSpecialDefense());
+            int speed = checkRangesForModifiers(statModifiers.getSpeed());
+            this.statModifiers = new Stats(StatType.MODIFIERS, 0, attack, defense, specialAttack, specialDefense, speed);
+        } else {
+            this.statModifiers = getDefaultStatModifiers();
+        }
+    }
+
+    private Stats getDefaultStatModifiers() {
+        return new Stats(StatType.MODIFIERS, 0, 0, 0, 0, 0, 0);
+    }
+
+    private int checkRangesForModifiers(int stat) {
+        if (stat < -6 || stat > 6)
+            stat = 0;
+
+        return stat;
     }
 
     public Stats getEffectiveStats() {
@@ -84,9 +104,66 @@ public class ActiveSet {
         this.critDamage = critDamage;
     }
 
-    public void calculateStats() {
-        this.effectiveStats = set.getDisplayedStats();
-        // todo: add stat modifier effect
+    public void calculateStats(Stats statModifiers) {
+        setStatModifiers(statModifiers);
+        Stats currentStats = set.getDisplayedStats();
+
+        int attack = currentStats.getAttack();
+        int attackModifier = statModifiers.getAttack();
+
+        if (attackModifier > 0) {
+            attack = attack * (2 + attackModifier);
+            attack = attack / 2;
+        } else if (attackModifier < 0) {
+            attack = attack * 2;
+            attack = attack / (2 + Math.abs(attackModifier));
+        }
+
+        int defense = currentStats.getDefense();
+        int defenseModifier = statModifiers.getDefense();
+
+        if (defenseModifier > 0) {
+            defense = defense * (2 + defenseModifier);
+            defense = defense / 2;
+        } else if (defenseModifier < 0) {
+            defense = defense * 2;
+            defense = defense / (2 + Math.abs(defenseModifier));
+        }
+
+        int specialAttack = currentStats.getSpecialAttack();
+        int specialAttackModifier = statModifiers.getSpecialAttack();
+
+        if (specialAttackModifier > 0) {
+            specialAttack = specialAttack * (2 + specialAttackModifier);
+            specialAttack = specialAttack / 2;
+        } else if (specialAttackModifier < 0) {
+            specialAttack = specialAttack * 2;
+            specialAttack = specialAttack / (2 + Math.abs(specialAttackModifier));
+        }
+
+        int specialDefense = currentStats.getSpecialDefense();
+        int specialDefenseModifier = statModifiers.getSpecialDefense();
+
+        if (specialDefenseModifier > 0) {
+            specialDefense = specialDefense * (2 + specialDefenseModifier);
+            specialDefense = specialDefense / 2;
+        } else if (specialDefenseModifier < 0) {
+            specialDefense = specialDefense * 2;
+            specialDefense = specialDefense / (2 + Math.abs(specialDefenseModifier));
+        }
+
+        int speed = currentStats.getSpeed();
+        int speedModifier = statModifiers.getSpeed();
+
+        if (speedModifier > 0) {
+            speed = speed * (2 + speedModifier);
+            speed = speed / 2;
+        } else if (speedModifier < 0) {
+            speed = speed * 2;
+            speed = speed / (2 + Math.abs(speedModifier));
+        }
+
+        this.effectiveStats = new Stats(StatType.ACTUAL, currentStats.getHp(), attack, defense, specialAttack, specialDefense, speed);
     }
 
     public void calculateAllDamages(ActiveSet opponent, Weather weather, Map<Type, Map<Type, Double>> typeChart) {

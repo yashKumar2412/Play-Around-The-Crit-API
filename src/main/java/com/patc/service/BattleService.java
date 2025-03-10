@@ -47,8 +47,8 @@ public class BattleService {
         return battle;
     }
 
-    public Battle updateEffectiveStats(Stats newStats, boolean isUser) {
-        battle.updateEffectiveStats(newStats, isUser);
+    public Battle updateEffectiveStats(Stats statModifiers, boolean isUser) {
+        battle.updateEffectiveStats(statModifiers, isUser);
         calculateAllDamages();
         return battle;
     }

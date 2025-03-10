@@ -104,13 +104,11 @@ public class Battle {
         }
     }
 
-    public void updateEffectiveStats(Stats newStats, boolean isUser) {
+    public void updateEffectiveStats(Stats statModifiers, boolean isUser) {
         if (isUser) {
-            user.setEffectiveStats(newStats);
-            user.calculateStats();
+            user.calculateStats(statModifiers);
         } else {
-            ai.setEffectiveStats(newStats);
-            ai.calculateStats();
+            ai.calculateStats(statModifiers);
         }
     }
 

@@ -46,8 +46,8 @@ public class Controller {
         return battleService.updateStatus(newStatus, isUser);
     }
 
-//    @GetMapping("/update/stats/modifiers/{isUser}")
-//    public Battle updateStatModifiers(@RequestBody Stats newStats, @PathVariable boolean isUser) {
-//        return battleService.updateEffectiveStats(newStats, isUser);
-//    }
+    @GetMapping("/update/stats/modifiers/{isUser}")
+    public Battle updateStatModifiers(@RequestBody Stats statModifiers, @PathVariable boolean isUser) {
+        return battleService.updateEffectiveStats(statModifiers, isUser);
+    }
 }
