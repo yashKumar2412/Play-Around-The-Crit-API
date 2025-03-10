@@ -16,7 +16,7 @@ public class Battle {
     public Battle() {
         this.data = new PlatformData();
         this.user = new ActiveSet(data.getPokemonSetCatalogue().selectPokemonSet("Greninja Default"));
-        this.ai = new ActiveSet(data.getPokemonSetCatalogue().selectPokemonSet("Delphox Default"));
+        this.ai = new ActiveSet(data.getPokemonSetCatalogue().selectPokemonSet("Greninja Default"));
         this.weather = Weather.None;
     }
 
@@ -52,45 +52,38 @@ public class Battle {
         this.weather = weather;
     }
 
-    public PokemonSet selectPokemonSet(String pokemonSetName, boolean isUser) {
+    public void selectPokemonSet(String pokemonSetName, boolean isUser) {
         PokemonSet set = data.selectPokemonSet(pokemonSetName);
         if (isUser) {
             user = new ActiveSet(set, ai, weather, data.getTypeChart());
         } else {
             ai = new ActiveSet(set, user, weather, data.getTypeChart());
         }
-
-        return set;
     }
 
     public void savePokemonSet(String pokemonSetName, PokemonSet set) {
         data.savePokemonSet(pokemonSetName, set);
     }
 
-    public Ability selectAbility(String abilityName, boolean isUser) {
+    public void selectAbility(String abilityName, boolean isUser) {
         Ability ability = data.selectAbility(abilityName);
         if (isUser) {
             user.getSet().setAbility(ability);
         } else {
             ai.getSet().setAbility(ability);
         }
-
-        return ability;
     }
 
-    public Item selectItem(String itemName, boolean isUser) {
+    public void selectItem(String itemName, boolean isUser) {
         Item item = data.selectItem(itemName);
         if (isUser) {
             user.getSet().setHeldItem(item);
         } else {
             ai.getSet().setHeldItem(item);
         }
-
-        return item;
     }
 
-    // todo: refactor this logic
-    public List<Move> selectMove(List<String> moveNames, boolean isUser) {
+    public void selectMove(List<String> moveNames, boolean isUser) {
         List<Move> moves = new ArrayList<>();
         for (String moveName: moveNames) {
             moves.add(data.selectMove(moveName));
@@ -101,8 +94,6 @@ public class Battle {
         } else {
             ai.getSet().setMoves(moves);
         }
-
-        return moves;
     }
 
     public void updateHealth(int newHealth, boolean isUser) {

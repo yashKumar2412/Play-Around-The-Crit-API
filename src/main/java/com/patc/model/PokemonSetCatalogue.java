@@ -18,30 +18,27 @@ public class PokemonSetCatalogue {
             Stats iv = new Stats(StatType.IV, 31, 31, 31, 31, 31, 31);
             Stats ev = new Stats(StatType.EV, 0, 0, 0, 0, 0, 0);
             Ability ability;
-            Nature nature;
-            Item item;
+            Nature nature = Nature.Hardy;
+            Item item = null;
             List<Move> moves = new ArrayList<>();
             if (entry.getKey().equals("Chesnaught")) {
                 ability = abilityMap.get("Overgrow");
-                nature = Nature.Hardy;
-                item = itemMap.get("Miracle Seed");
-                moves.add(moveMap.get("Seed Bomb"));
-                moves.add(moveMap.get("Brick Break"));
-                moves.add(moveMap.get("Mud Shot"));
+//                item = itemMap.get("Miracle Seed");
+//                moves.add(moveMap.get("Seed Bomb"));
+//                moves.add(moveMap.get("Brick Break"));
+//                moves.add(moveMap.get("Mud Shot"));
             } else if (entry.getKey().equals("Delphox")) {
                 ability = abilityMap.get("Blaze");
-                nature = Nature.Impish;
-                item = itemMap.get("Charcoal");
-                moves.add(moveMap.get("Flamethrower"));
-                moves.add(moveMap.get("Psychic"));
-                moves.add(moveMap.get("Thunder Punch"));
+//                item = itemMap.get("Charcoal");
+//                moves.add(moveMap.get("Flamethrower"));
+//                moves.add(moveMap.get("Psychic"));
+//                moves.add(moveMap.get("Thunder Punch"));
             } else {
                 ability = abilityMap.get("Torrent");
-                nature = Nature.Adamant;
-                item = itemMap.get("Mystic Water");
-                moves.add(moveMap.get("Waterfall"));
-                moves.add(moveMap.get("Night Slash"));
-                moves.add(moveMap.get("Ice Beam"));
+//                item = itemMap.get("Mystic Water");
+//                moves.add(moveMap.get("Waterfall"));
+//                moves.add(moveMap.get("Night Slash"));
+//                moves.add(moveMap.get("Ice Beam"));
             }
             String setKey = entry.getKey() + " Default";
             PokemonSet set = new PokemonSet(setKey, entry.getValue(), 50, iv, ev, ability, nature, item, moves);

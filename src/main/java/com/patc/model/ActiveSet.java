@@ -98,7 +98,7 @@ public class ActiveSet {
                 int baseDamage = (2 * set.getLevel()) / 5 + 2;
                 baseDamage = baseDamage * move.getBasePower();
 
-                if (set.getHeldItem().isHasInGameEffect()) {
+                if (set.getHeldItem() != null && set.getHeldItem().isHasInGameEffect()) {
                     baseDamage = calculateItemBoost(move, baseDamage);
                 }
 
