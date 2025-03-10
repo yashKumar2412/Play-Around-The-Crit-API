@@ -40,34 +40,34 @@ public class PokemonSet {
         int speed = ((2 * pokemon.getBaseStats().getSpeed() + iv.getSpeed() + (ev.getSpeed() / 4)) * level) / 100 + 5;
 
         if (nature == Nature.Lonely || nature == Nature.Adamant || nature == Nature.Naughty || nature == Nature.Brave)
-            attack = attack + (attack / 10);
+            attack = (attack * 11) / 10;
 
         if (nature == Nature.Bold || nature == Nature.Impish || nature == Nature.Lax || nature == Nature.Relaxed)
-            defense = defense + (defense / 10);
+            defense = (defense * 11) / 10;
 
         if (nature == Nature.Modest || nature == Nature.Mild || nature == Nature.Rash || nature == Nature.Quiet)
-            specialAttack = specialAttack + (specialAttack / 10);
+            specialAttack = (specialAttack * 11) / 10;
 
         if (nature == Nature.Calm || nature == Nature.Gentle || nature == Nature.Careful || nature == Nature.Sassy)
-            specialDefense = specialDefense + (specialDefense / 10);
+            specialDefense = (specialDefense * 11) / 10;
 
         if (nature == Nature.Timid || nature == Nature.Hasty || nature == Nature.Jolly || nature == Nature.Naive)
-            speed = speed + (speed / 10);
+            speed = (speed * 11) / 10;
 
         if (nature == Nature.Bold || nature == Nature.Modest || nature == Nature.Calm || nature == Nature.Timid)
-            attack = attack - (attack / 10);
+            attack = (attack * 9) / 10;
 
         if (nature == Nature.Lonely || nature == Nature.Mild || nature == Nature.Gentle || nature == Nature.Hasty)
-            defense = defense - (defense / 10);
+            defense = (defense * 9) / 10;
 
         if (nature == Nature.Adamant || nature == Nature.Impish || nature == Nature.Careful || nature == Nature.Jolly)
-            specialAttack = specialAttack - (specialAttack / 10);
+            specialAttack = (specialAttack * 9) / 10;
 
         if (nature == Nature.Naughty || nature == Nature.Lax || nature == Nature.Rash || nature == Nature.Naive)
-            specialDefense = specialDefense - (specialDefense / 10);
+            specialDefense = (specialDefense * 9) / 10;
 
         if (nature == Nature.Brave || nature == Nature.Relaxed || nature == Nature.Quiet || nature == Nature.Sassy)
-            speed = speed - (speed / 10);
+            speed = (speed * 9) / 10;
         
         this.displayedStats = new Stats(StatType.ACTUAL, hp, attack, defense, specialAttack, specialDefense, speed);
     }
